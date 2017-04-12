@@ -42,6 +42,8 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Sam Brannen
  * @author Michael Isvy
  */
+
+
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
@@ -92,6 +94,9 @@ public class Owner extends Person {
         }
         return this.pets;
     }
+
+
+
 
     protected void setPetsInternal(Set<Pet> pets) {
         this.pets = pets;

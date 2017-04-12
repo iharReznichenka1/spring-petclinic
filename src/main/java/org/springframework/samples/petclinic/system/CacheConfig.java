@@ -18,8 +18,10 @@ class CacheConfig {
 
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
+
         return cm -> {
             Configuration<Object, Object> cacheConfiguration = createCacheConfiguration();
+
             cm.createCache("vets", cacheConfiguration);
         };
     }
@@ -27,6 +29,7 @@ class CacheConfig {
     private Configuration<Object, Object> createCacheConfiguration() {
         // Create a cache using infinite heap. A real application will want to use an
         // implementation dependent configuration that will better fit your needs
+
         return new MutableConfiguration<>().setStatisticsEnabled(true);
     }
 }
