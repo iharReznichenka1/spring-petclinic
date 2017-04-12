@@ -17,19 +17,20 @@ node('root') {
             echo "M2_HOME = ${M2_HOME}"
         '''
       }
-      stage('Build') {
-         try {
+      try {
+         stage('Build') {
             sh 'mvn -Dmaven.test.failure.ignore=true install'
-         } catch (ex) {
-            currentBuild.result = 'FAILURE'
-            throw ex
          }
-      }
-      stage('SonarQube analysis') {
-         def scannerHome = tool 'SonarQube 3.0'
-         withSonarQubeEnv('My SonarQube Server') {
-            sh "${scannerHome}/bin/sonar-scanner"
+         stage('SonarQube analysis') {
+            def scannerHome = tool name: 'SonarQube 3.0'
+            withSonarQubeEnv('My SonarQube Server') {
+               sh "${scannerHome}/bin/sonar-scanner"
+            }
          }
+      } catch (ex) {
+         currentBuild.result = 'FAILURE'
+         mail to: 'ihar.reznichenka@gmail.com', subject: "Failed Pipeline: ${currentBuild.fullDisplayName}", body: "Something is wrong with ${env.BUILD_URL}"
+         throw ex
       }
       stage('Summary') {
          if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
