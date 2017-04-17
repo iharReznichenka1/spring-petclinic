@@ -27,7 +27,7 @@ node('root') {
             }
             sleep 10
             sh '''
-                  url=`cat $WORKSPACE/.sonar/report-task.txt |grep ceTaskUrl |cut -f2,3 -d “=”`
+                  url=`cat $WORKSPACE/target/sonar/report-task.txt |grep ceTaskUrl |cut -f2,3 -d “=”`
                   status=`curl -u admin:admin $url |jq .task.status|sed -e ‘s/^”//’  -e ‘s/”$//’`
                   if [[ “$status”==”SUCCESS” ]]; then
                   analysisID=`curl -u admin:admin $url |jq ‘.task.analysisId’|sed -e ‘s/^”//’  -e ‘s/”$//’`
