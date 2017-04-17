@@ -26,7 +26,7 @@ node('root') {
                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'
             }
             sh '''
-               if [ "\\`curl -sL -w %{http_code} http://192.168.99.100:9000/api/qualitygates/project_status?projectKey=project_key -o /dev/null -S --quiet 2>&1 | jsawk -a 'return this.status'\\`" == "ERROR" ]; 
+               if [ "\\`curl -sL -w %{http_code} http://192.168.99.100:9000/api/qualitygates/project_status?projectKey=spring-petclinic -o /dev/null -S --quiet 2>&1 | jsawk -a 'return this.status'\\`" == "ERROR" ]; 
                then 
                  exit 1; 
                fi;
