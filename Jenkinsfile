@@ -25,6 +25,7 @@ node('root') {
             withSonarQubeEnv('My SonarQube Server') {
                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'
             }
+            sleep 10
             sh '''
                   url=`cat $WORKSPACE/.sonar/report-task.txt |grep ceTaskUrl |cut -f2,3 -d “=”`
                   status=`curl -u admin:admin $url |jq .task.status|sed -e ‘s/^”//’  -e ‘s/”$//’`
