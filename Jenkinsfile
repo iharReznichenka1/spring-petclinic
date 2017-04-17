@@ -13,9 +13,9 @@ node('root') {
         stage('Initialize') {
             checkout scm
             sh '''
-            echo "PATH = ${PATH}"
-            echo "M2_HOME = ${M2_HOME}"
-          '''
+               echo "PATH = ${PATH}"
+               echo "M2_HOME = ${M2_HOME}"
+            '''
         }
         try {
             stage('Build') {
@@ -25,6 +25,12 @@ node('root') {
                 withSonarQubeEnv('My SonarQube Server') {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar'
                 }
+               sh '''
+                  if [ "\\`curl -sL -w %{http_code} http://192.168.99.100:9000/api/qualitygates/project_status?projectKey=spring-petclinic -o /dev/null -S --quiet 2>&1 | jsawk -a 'return this.status'\\`" == "ERROR" ]; 
+                  then
+                    exit 1; 
+                  fi;
+               '''
             }
         } catch (ex) {
             currentBuild.result = 'FAILURE'
