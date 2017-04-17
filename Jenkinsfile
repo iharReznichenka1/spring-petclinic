@@ -19,7 +19,8 @@ node('root') {
       }
       try {
          stage('Build') {
-            sh 'mvn -Dmaven.test.failure.ignore=true install'
+//            -Dmaven.test.failure.ignore=true
+            sh 'mvn install'
          }
          stage('SonarQube analysis') {
             withSonarQubeEnv('My SonarQube Server') {
